@@ -32,6 +32,8 @@ A browser-based pickup measurement workbench for a Hi-Z audio-interface input. I
 
 [![Pickup Lab measurement workbench](assets/screenshots/pickuplab.png)](https://niklaushirt.github.io/pickuplab/)
 
+[![Pickup Lab measurement workbench](assets/screenshots/pickuplab2.png)](https://niklaushirt.github.io/pickuplab/)
+
 ## STRINGFIELD
 
 Balance a guitar pickup string by string. A guided sweep maps all six string levels, highlights weak or dominant positions, and helps shape a precise output contour across the pickup.
