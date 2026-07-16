@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Nick's Audio Tools — focused browser-based tools for guitar pickup measurement, room acoustics, and impulse-response work.">
+  <meta name="theme-color" content="#090909">
+  <title>Nick's Audio Tools</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080808;
+      --panel: #111111;
+      --panel-light: #171717;
+      --text: #f5f2ec;
+      --muted: #aaa49a;
+      --line: rgba(255,255,255,.1);
+      --orange: #ff7a18;
+      --orange-light: #ffad4d;
+      --orange-dark: #d84a00;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 75% 8%, rgba(255, 91, 0, .14), transparent 25rem),
+        radial-gradient(circle at 12% 42%, rgba(255, 122, 24, .07), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: .16;
+      background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: linear-gradient(to bottom, black, transparent 82%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      width: 42rem;
+      height: 42rem;
+      right: -20rem;
+      top: 12rem;
+      z-index: -1;
+      pointer-events: none;
+      border-radius: 50%;
+      background: rgba(255, 92, 0, .16);
+      filter: blur(120px);
+    }
+
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    .shell {
+      width: min(calc(100% - 40px), var(--max));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      background: rgba(8,8,8,.74);
+      backdrop-filter: blur(18px);
+    }
+
+    nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+
+    .brand-mark {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 10px;
+      background: linear-gradient(145deg, var(--orange-light), var(--orange-dark));
+      box-shadow: 0 0 26px rgba(255,104,12,.28);
+      color: #17100a;
+    }
+
+    .brand-mark svg { width: 19px; height: 19px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: .88rem;
+      font-weight: 650;
+      color: var(--muted);
+    }
+
+    .nav-links a { text-decoration: none; transition: color .2s ease; }
+    .nav-links a:hover { color: var(--text); }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 0 20px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: #170d05;
+      background: linear-gradient(135deg, var(--orange-light), var(--orange));
+      box-shadow: 0 10px 32px rgba(255,94,0,.22), inset 0 1px 0 rgba(255,255,255,.35);
+      text-decoration: none;
+      font-size: .92rem;
+      font-weight: 800;
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+      box-shadow: 0 14px 42px rgba(255,94,0,.34), inset 0 1px 0 rgba(255,255,255,.4);
+    }
+
+    .button:focus-visible, a:focus-visible {
+      outline: 3px solid rgba(255,165,72,.65);
+      outline-offset: 3px;
+    }
+
+    .button svg { width: 17px; height: 17px; }
+
+    .button.secondary {
+      color: var(--text);
+      border-color: var(--line);
+      background: rgba(255,255,255,.045);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+    }
+
+    .button.small { min-height: 40px; padding: 0 15px; border-radius: 10px; font-size: .84rem; }
+
+    .hero {
+      min-height: 690px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr);
+      align-items: center;
+      gap: 58px;
+      padding: 96px 0 90px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      color: var(--orange-light);
+      font-size: .73rem;
+      font-weight: 850;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 25px;
+      height: 2px;
+      border-radius: 99px;
+      background: var(--orange);
+      box-shadow: 0 0 16px var(--orange);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 24px;
+      font-size: clamp(3.6rem, 7.3vw, 6.75rem);
+      line-height: .87;
+      letter-spacing: -.075em;
+      text-wrap: balance;
+    }
+
+    h1 span {
+      display: block;
+      color: transparent;
+      background: linear-gradient(100deg, var(--orange-light), var(--orange) 60%, #ff5a00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow: 0 0 55px rgba(255,104,14,.15);
+    }
+
+    .hero-copy > p {
+      max-width: 610px;
+      margin-bottom: 32px;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.7vw, 1.23rem);
+      line-height: 1.7;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .hero-art {
+      position: relative;
+      min-height: 460px;
+      display: grid;
+      place-items: center;
+    }
+
+    .hero-art::before {
+      content: "";
+      position: absolute;
+      width: min(100%, 470px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,130,34,.3) 0, rgba(255,78,0,.12) 42%, transparent 70%);
+      filter: blur(8px);
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    .hero-art::after {
+      content: "";
+      position: absolute;
+      inset: 11% 3%;
+      border: 1px solid rgba(255,143,52,.15);
+      border-radius: 50%;
+      transform: rotate(-12deg);
+    }
+
+    .hero-art img {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 520px);
+      transform: rotate(-4deg);
+      filter: drop-shadow(0 28px 28px rgba(0,0,0,.38)) drop-shadow(0 0 35px rgba(255,123,24,.16));
+    }
+
+    .floating-note {
+      position: absolute;
+      z-index: 3;
+      right: 1%;
+      bottom: 12%;
+      width: 180px;
+      padding: 13px 15px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 13px;
+      background: rgba(18,18,18,.78);
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      backdrop-filter: blur(12px);
+    }
+
+    .floating-note b { display: block; margin-bottom: 3px; font-size: .82rem; }
+    .floating-note span { color: var(--muted); font-size: .72rem; }
+    .signal { display: flex; align-items: center; gap: 3px; height: 16px; margin-bottom: 9px; }
+    .signal i { width: 3px; border-radius: 3px; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+    .signal i:nth-child(1), .signal i:nth-child(7) { height: 4px; }
+    .signal i:nth-child(2), .signal i:nth-child(6) { height: 8px; }
+    .signal i:nth-child(3), .signal i:nth-child(5) { height: 13px; }
+    .signal i:nth-child(4) { height: 16px; }
+
+    @keyframes breathe { 50% { transform: scale(1.08); opacity: .78; } }
+
+    .trust-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(110deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+      overflow: hidden;
+    }
+
+    .trust-item { padding: 24px 30px; }
+    .trust-item + .trust-item { border-left: 1px solid var(--line); }
+    .trust-item strong { display: block; margin-bottom: 6px; font-size: 1.12rem; letter-spacing: -.025em; }
+    .trust-item span { color: var(--muted); font-size: .86rem; }
+
+    section.tools { padding: 130px 0 65px; }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      max-width: 750px;
+      margin-bottom: 0;
+      font-size: clamp(2.7rem, 5.2vw, 5.1rem);
+      line-height: .98;
+      letter-spacing: -.06em;
+    }
+
+    .section-heading p { max-width: 385px; margin-bottom: 5px; color: var(--muted); line-height: 1.65; }
+
+    .tool-list { display: grid; gap: 24px; }
+
+    .tool-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      min-height: 430px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(25,25,25,.96), rgba(13,13,13,.96));
+      box-shadow: 0 30px 80px rgba(0,0,0,.22);
+      transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,133,40,.34);
+      box-shadow: 0 34px 90px rgba(0,0,0,.36), 0 0 55px rgba(255,91,0,.06);
+    }
+
+    .tool-card:nth-child(even) { grid-template-columns: 1.2fr .8fr; }
+    .tool-card:nth-child(even) .tool-content { order: 2; }
+    .tool-card:nth-child(even) .tool-visual { order: 1; }
+
+    .tool-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: clamp(32px, 5vw, 64px);
+    }
+
+    .tool-number {
+      margin-bottom: 54px;
+      color: var(--orange-light);
+      font: 700 .69rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .13em;
+    }
+
+    .tool-content h3 {
+      margin-bottom: 18px;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      line-height: 1;
+      letter-spacing: -.052em;
+    }
+
+    .tool-content p { margin-bottom: 30px; color: var(--muted); line-height: 1.66; }
+
+    .tool-visual {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      background: #0d0d0d;
+    }
+
+    .tool-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 80px rgba(0,0,0,.35);
+      background: linear-gradient(110deg, rgba(255,92,0,.06), transparent 38%);
+    }
+
+    .tool-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left center;
+      transition: transform .7s cubic-bezier(.2,.75,.2,1), filter .3s ease;
+    }
+
+    .tool-card:hover .tool-visual img { transform: scale(1.025); }
+    .tool-card.room .tool-visual img { object-position: 20% center; }
+    .tool-card.pickup .tool-visual img { object-position: 15% center; }
+
+    .closing {
+      padding: 95px 0 125px;
+      text-align: center;
+    }
+
+    .closing-inner {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(60px, 9vw, 110px) 25px;
+      border: 1px solid rgba(255,138,43,.2);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(255,116,20,.12), rgba(18,18,18,.82) 42%, rgba(12,12,12,.92));
+    }
+
+    .closing-inner::before {
+      content: "";
+      position: absolute;
+      width: 26rem;
+      height: 26rem;
+      left: 50%;
+      bottom: -20rem;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: var(--orange);
+      filter: blur(110px);
+      opacity: .38;
+    }
+
+    .closing h2 { position: relative; max-width: 760px; margin: 0 auto 22px; }
+    .closing p { position: relative; max-width: 600px; margin: 0 auto 32px; color: var(--muted); line-height: 1.65; }
+    .closing .button { position: relative; }
+
+    footer {
+      padding: 30px 0 45px;
+      border-top: 1px solid var(--line);
+      color: #77736d;
+      font-size: .8rem;
+    }
+
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+    footer a { text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 80px; }
+      .hero-copy { text-align: center; }
+      .hero-copy > p { margin-inline: auto; }
+      .eyebrow { justify-content: center; }
+      .hero-actions { justify-content: center; }
+      .hero-art { min-height: 390px; max-width: 610px; width: 100%; margin-inline: auto; }
+      .section-heading { align-items: flex-start; flex-direction: column; }
+      .tool-card, .tool-card:nth-child(even) { grid-template-columns: 1fr; }
+      .tool-card:nth-child(even) .tool-content, .tool-card:nth-child(even) .tool-visual { order: initial; }
+      .tool-content { min-height: 360px; }
+      .tool-number { margin-bottom: 38px; }
+      .tool-visual { min-height: 360px; }
+    }
+
+    @media (max-width: 680px) {
+      .shell { width: min(calc(100% - 28px), var(--max)); }
+      nav { min-height: 66px; }
+      .nav-links > a:not(.button) { display: none; }
+      .nav-links { gap: 0; }
+      .hero { gap: 28px; padding: 72px 0 60px; }
+      h1 { font-size: clamp(3.2rem, 17vw, 5rem); }
+      .hero-art { min-height: 320px; }
+      .floating-note { right: 0; bottom: 4%; }
+      .trust-strip { grid-template-columns: 1fr; }
+      .trust-item + .trust-item { border-left: 0; border-top: 1px solid var(--line); }
+      .trust-item { padding: 20px 24px; }
+      section.tools { padding-top: 100px; }
+      .tool-content { min-height: 340px; padding: 34px 28px; }
+      .tool-visual { min-height: 255px; }
+      .closing { padding: 70px 0 90px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="shell" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Nick's Audio Tools home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 12h2l2-6 4 12 3-9 2 6h3"/></svg>
+        </span>
+        Nick's Audio Tools
+      </a>
+      <div class="nav-links">
+        <a href="#tools">The tools</a>
+        <a class="button small" href="#tools">Explore all</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <div class="eyebrow">Browser-based audio workbench</div>
+        <h1>Measure sound.<span>Shape the result.</span></h1>
+        <p>A focused collection of tools for guitar pickups, room acoustics, and impulse-response work. No installs, no clutter — just open your browser and start measuring.</p>
+        <div class="hero-actions">
+          <a class="button" href="#tools">
+            Explore the tools
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="button secondary" href="https://github.com/niklaushirt" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-label="Illustrated electric bass guitar">
+        <img src="assets/logo.png" alt="Electric bass guitar with dancing figures">
+        <div class="floating-note" aria-hidden="true">
+          <span class="signal"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <b>Signal ready</b>
+          <span>Built for real measurements</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="shell trust-strip reveal" aria-label="Product benefits">
+      <div class="trust-item"><strong>100% browser-based</strong><span>Nothing to download or install.</span></div>
+      <div class="trust-item"><strong>Built for practical work</strong><span>Focused tools, meaningful results.</span></div>
+      <div class="trust-item"><strong>Five audio workspaces</strong><span>From pickups to the whole room.</span></div>
+    </div>
+
+    <section class="tools shell" id="tools">
+      <div class="section-heading reveal">
+        <h2>Five tools.<br>One sharper workflow.</h2>
+        <p>Each workspace is purpose-built around a real audio task, with the controls and output you need to move from signal to insight.</p>
+      </div>
+
+      <div class="tool-list">
+        <article class="tool-card reveal">
+          <div class="tool-content">
+            <span class="tool-number">01 / FREQUENCY</span>
+            <h3>Guitar Pickup<br>Bode Plotter</h3>
+            <p>Sweep a compensated sine signal through your test rig, plot the normalized response, compare slots, and export clean plots or raw CSV data.</p>
+            <a class="button" href="https://niklaushirt.github.io/bodeplotter/" target="_blank" rel="noopener noreferrer">
+              Open Bode Plotter
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+          <a class="tool-visual" href="https://niklaushirt.github.io/bodeplotter/" target="_blank" rel="noopener noreferrer" aria-label="Open Guitar Pickup Bode Plotter">
+            <img src="assets/screenshots/bodeplotter.png" alt="Guitar Pickup Bode Plotter frequency response interface" loading="lazy">
+          </a>
+        </article>
+
+        <article class="tool-card room reveal">
+          <div class="tool-content">
+            <span class="tool-number">02 / ACOUSTICS</span>
+            <h3>RoomScope</h3>
+            <p>Measure a listening position and turn it into frequency, impulse, decay, reflection, room-mode, and practical EQ guidance.</p>
+            <a class="button" href="https://niklaushirt.github.io/roomscope/" target="_blank" rel="noopener noreferrer">
+              Open RoomScope
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+          <a class="tool-visual" href="https://niklaushirt.github.io/roomscope/" target="_blank" rel="noopener noreferrer" aria-label="Open RoomScope">
+            <img src="assets/screenshots/roomscope.png" alt="RoomScope room-acoustics measurement interface" loading="lazy">
+          </a>
+        </article>
+
+        <article class="tool-card pickup reveal">
+          <div class="tool-content">
+            <span class="tool-number">03 / WORKBENCH</span>
+            <h3>Pickup Lab</h3>
+            <p>Inspect live waveforms and spectra, monitor detailed metrics, generate test signals, and run Bode, polarity, and magnetic-saturation measurements.</p>
+            <a class="button" href="https://niklaushirt.github.io/pickuplab/" target="_blank" rel="noopener noreferrer">
+              Open Pickup Lab
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+          <a class="tool-visual" href="https://niklaushirt.github.io/pickuplab/" target="_blank" rel="noopener noreferrer" aria-label="Open Pickup Lab">
+            <img src="assets/screenshots/pickuplab.png" alt="Pickup Lab browser measurement workbench" loading="lazy">
+          </a>
+        </article>
+
+        <article class="tool-card reveal">
+          <div class="tool-content">
+            <span class="tool-number">04 / BALANCE</span>
+            <h3>STRINGFIELD</h3>
+            <p>Map every string, spot weak or dominant positions, and shape a precise output contour across your guitar pickup.</p>
+            <a class="button" href="https://niklaushirt.github.io/stringfield/" target="_blank" rel="noopener noreferrer">
+              Open STRINGFIELD
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+          <a class="tool-visual" href="https://niklaushirt.github.io/stringfield/" target="_blank" rel="noopener noreferrer" aria-label="Open STRINGFIELD">
+            <img src="assets/screenshots/stringfield.png" alt="STRINGFIELD pickup output balancer interface" loading="lazy">
+          </a>
+        </article>
+
+        <article class="tool-card reveal">
+          <div class="tool-content">
+            <span class="tool-number">05 / IMPULSE</span>
+            <h3>IR Stacker</h3>
+            <p>Layer impulse responses, set level, pan, delay, and polarity, auto-align with cross-correlation, then preview and export the final WAV.</p>
+            <a class="button" href="https://niklaushirt.github.io/irstacker/" target="_blank" rel="noopener noreferrer">
+              Open IR Stacker
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+          <a class="tool-visual" href="https://niklaushirt.github.io/irstacker/" target="_blank" rel="noopener noreferrer" aria-label="Open IR Stacker">
+            <img src="assets/screenshots/irstacker.png" alt="IR Stacker impulse-response mixing interface" loading="lazy">
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section class="closing shell reveal">
+      <div class="closing-inner">
+        <div class="eyebrow">Ready when your signal is</div>
+        <h2>Better audio decisions start with better measurements.</h2>
+        <p>Choose a workspace, connect your audio gear, and turn what you hear into something you can see, compare, and improve.</p>
+        <a class="button" href="#tools">
+          Choose your tool
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>© <span id="year">2026</span> Nick's Audio Tools</span>
+      <span>Made for curious ears and precise hands.</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const reveal = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          reveal.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
+
+    document.querySelectorAll('.reveal').forEach((element) => reveal.observe(element));
+  </script>
+</body>
+</html>
