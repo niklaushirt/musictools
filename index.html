@@ -373,6 +373,12 @@
 
     .tool-content p { margin-bottom: 30px; color: var(--muted); line-height: 1.66; }
 
+    .tool-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
     .tool-visual {
       position: relative;
       min-width: 0;
@@ -509,7 +515,7 @@
       <div class="hero-copy">
         <div class="eyebrow">Browser-based audio workbench</div>
         <h1>Measure sound.<span>Shape the result.</span></h1>
-        <p>A focused collection of tools for guitar pickups, room acoustics, and impulse-response work. No installs, no clutter — just open your browser and start measuring.</p>
+        <p>A focused collection of partially AI generated tools for guitar pickups, room acoustics, and impulse-response work. No installs, no clutter — just open your browser and start measuring.</p>
         <div class="hero-actions">
           <a class="button" href="#tools">
             Explore the tools
@@ -532,7 +538,7 @@
     <div class="shell trust-strip reveal" aria-label="Product benefits">
       <div class="trust-item"><strong>100% browser-based</strong><span>Nothing to download or install.</span></div>
       <div class="trust-item"><strong>Built for practical work</strong><span>Focused tools, meaningful results.</span></div>
-      <div class="trust-item"><strong>Five audio workspaces</strong><span>From pickups to the whole room.</span></div>
+      <div class="trust-item"><strong>AI for Audio</strong><span>With the help of AI</span></div>
     </div>
 
     <section class="tools shell" id="tools">
@@ -542,18 +548,24 @@
       </div>
 
       <div class="tool-list">
-        <article class="tool-card reveal">
+        <article class="tool-card pickup reveal">
           <div class="tool-content">
-            <span class="tool-number">01 / FREQUENCY</span>
-            <h3>Guitar Pickup<br>Bode Plotter</h3>
-            <p>Sweep a compensated sine signal through your test rig, plot the normalized response, compare slots, and export clean plots or raw CSV data.</p>
-            <a class="button" href="https://niklaushirt.github.io/bodeplotter/" target="_blank" rel="noopener noreferrer">
-              Open Bode Plotter
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
-            </a>
+            <span class="tool-number">01 / WORKBENCH</span>
+            <h3>Pickup Lab</h3>
+            <p>Inspect live waveforms and spectra, monitor detailed metrics, generate test signals, and run Bode, polarity, and magnetic-saturation measurements.</p>
+            <div class="tool-actions">
+              <a class="button" href="https://niklaushirt.github.io/pickuplab/" target="_blank" rel="noopener noreferrer">
+                Open Pickup Lab
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="button secondary" href="https://github.com/niklaushirt/pickuplab" target="_blank" rel="noopener noreferrer">
+                Source code
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.16c-3.12.68-3.78-1.32-3.78-1.32-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.49-.28-5.11-1.25-5.11-5.54 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.15A10.72 10.72 0 0 1 12 6.1c.95 0 1.9.13 2.79.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.8 1.16 3.02 0 4.3-2.63 5.25-5.13 5.53.4.35.76 1.03.76 2.08v3.15c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>
+              </a>
+            </div>
           </div>
-          <a class="tool-visual" href="https://niklaushirt.github.io/bodeplotter/" target="_blank" rel="noopener noreferrer" aria-label="Open Guitar Pickup Bode Plotter">
-            <img src="assets/screenshots/bodeplotter.png" alt="Guitar Pickup Bode Plotter frequency response interface" loading="lazy">
+          <a class="tool-visual" href="https://niklaushirt.github.io/pickuplab/" target="_blank" rel="noopener noreferrer" aria-label="Open Pickup Lab">
+            <img src="assets/screenshots/pickuplab.png" alt="Pickup Lab browser measurement workbench" loading="lazy">
           </a>
         </article>
 
@@ -562,40 +574,37 @@
             <span class="tool-number">02 / ACOUSTICS</span>
             <h3>RoomScope</h3>
             <p>Measure a listening position and turn it into frequency, impulse, decay, reflection, room-mode, and practical EQ guidance.</p>
-            <a class="button" href="https://niklaushirt.github.io/roomscope/" target="_blank" rel="noopener noreferrer">
-              Open RoomScope
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
-            </a>
+            <div class="tool-actions">
+              <a class="button" href="https://niklaushirt.github.io/roomscope/" target="_blank" rel="noopener noreferrer">
+                Open RoomScope
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="button secondary" href="https://github.com/niklaushirt/roomscope" target="_blank" rel="noopener noreferrer">
+                Source code
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.16c-3.12.68-3.78-1.32-3.78-1.32-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.49-.28-5.11-1.25-5.11-5.54 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.15A10.72 10.72 0 0 1 12 6.1c.95 0 1.9.13 2.79.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.8 1.16 3.02 0 4.3-2.63 5.25-5.13 5.53.4.35.76 1.03.76 2.08v3.15c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>
+              </a>
+            </div>
           </div>
           <a class="tool-visual" href="https://niklaushirt.github.io/roomscope/" target="_blank" rel="noopener noreferrer" aria-label="Open RoomScope">
             <img src="assets/screenshots/roomscope.png" alt="RoomScope room-acoustics measurement interface" loading="lazy">
           </a>
         </article>
 
-        <article class="tool-card pickup reveal">
-          <div class="tool-content">
-            <span class="tool-number">03 / WORKBENCH</span>
-            <h3>Pickup Lab</h3>
-            <p>Inspect live waveforms and spectra, monitor detailed metrics, generate test signals, and run Bode, polarity, and magnetic-saturation measurements.</p>
-            <a class="button" href="https://niklaushirt.github.io/pickuplab/" target="_blank" rel="noopener noreferrer">
-              Open Pickup Lab
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
-            </a>
-          </div>
-          <a class="tool-visual" href="https://niklaushirt.github.io/pickuplab/" target="_blank" rel="noopener noreferrer" aria-label="Open Pickup Lab">
-            <img src="assets/screenshots/pickuplab.png" alt="Pickup Lab browser measurement workbench" loading="lazy">
-          </a>
-        </article>
-
         <article class="tool-card reveal">
           <div class="tool-content">
-            <span class="tool-number">04 / BALANCE</span>
+            <span class="tool-number">03 / BALANCE</span>
             <h3>STRINGFIELD</h3>
             <p>Map every string, spot weak or dominant positions, and shape a precise output contour across your guitar pickup.</p>
-            <a class="button" href="https://niklaushirt.github.io/stringfield/" target="_blank" rel="noopener noreferrer">
-              Open STRINGFIELD
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
-            </a>
+            <div class="tool-actions">
+              <a class="button" href="https://niklaushirt.github.io/stringfield/" target="_blank" rel="noopener noreferrer">
+                Open STRINGFIELD
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="button secondary" href="https://github.com/niklaushirt/stringfield" target="_blank" rel="noopener noreferrer">
+                Source code
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.16c-3.12.68-3.78-1.32-3.78-1.32-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.49-.28-5.11-1.25-5.11-5.54 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.15A10.72 10.72 0 0 1 12 6.1c.95 0 1.9.13 2.79.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.8 1.16 3.02 0 4.3-2.63 5.25-5.13 5.53.4.35.76 1.03.76 2.08v3.15c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>
+              </a>
+            </div>
           </div>
           <a class="tool-visual" href="https://niklaushirt.github.io/stringfield/" target="_blank" rel="noopener noreferrer" aria-label="Open STRINGFIELD">
             <img src="assets/screenshots/stringfield.png" alt="STRINGFIELD pickup output balancer interface" loading="lazy">
@@ -604,13 +613,40 @@
 
         <article class="tool-card reveal">
           <div class="tool-content">
+            <span class="tool-number">04 / FREQUENCY</span>
+            <h3>Guitar Pickup<br>Bode Plotter</h3>
+            <p>Sweep a compensated sine signal through your test rig, plot the normalized response, compare slots, and export clean plots or raw CSV data.</p>
+            <div class="tool-actions">
+              <a class="button" href="https://niklaushirt.github.io/bodeplotter/" target="_blank" rel="noopener noreferrer">
+                Open Bode Plotter
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="button secondary" href="https://github.com/niklaushirt/bodeplotter" target="_blank" rel="noopener noreferrer">
+                Source code
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.16c-3.12.68-3.78-1.32-3.78-1.32-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.49-.28-5.11-1.25-5.11-5.54 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.15A10.72 10.72 0 0 1 12 6.1c.95 0 1.9.13 2.79.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.8 1.16 3.02 0 4.3-2.63 5.25-5.13 5.53.4.35.76 1.03.76 2.08v3.15c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>
+              </a>
+            </div>
+          </div>
+          <a class="tool-visual" href="https://niklaushirt.github.io/bodeplotter/" target="_blank" rel="noopener noreferrer" aria-label="Open Guitar Pickup Bode Plotter">
+            <img src="assets/screenshots/bodeplotter.png" alt="Guitar Pickup Bode Plotter frequency response interface" loading="lazy">
+          </a>
+        </article>
+
+        <article class="tool-card reveal">
+          <div class="tool-content">
             <span class="tool-number">05 / IMPULSE</span>
             <h3>IR Stacker</h3>
             <p>Layer impulse responses, set level, pan, delay, and polarity, auto-align with cross-correlation, then preview and export the final WAV.</p>
-            <a class="button" href="https://niklaushirt.github.io/irstacker/" target="_blank" rel="noopener noreferrer">
-              Open IR Stacker
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
-            </a>
+            <div class="tool-actions">
+              <a class="button" href="https://niklaushirt.github.io/irstacker/" target="_blank" rel="noopener noreferrer">
+                Open IR Stacker
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 14 0M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="button secondary" href="https://github.com/niklaushirt/irstacker" target="_blank" rel="noopener noreferrer">
+                Source code
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.16c-3.12.68-3.78-1.32-3.78-1.32-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.49-.28-5.11-1.25-5.11-5.54 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.15A10.72 10.72 0 0 1 12 6.1c.95 0 1.9.13 2.79.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.8 1.16 3.02 0 4.3-2.63 5.25-5.13 5.53.4.35.76 1.03.76 2.08v3.15c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>
+              </a>
+            </div>
           </div>
           <a class="tool-visual" href="https://niklaushirt.github.io/irstacker/" target="_blank" rel="noopener noreferrer" aria-label="Open IR Stacker">
             <img src="assets/screenshots/irstacker.png" alt="IR Stacker impulse-response mixing interface" loading="lazy">
